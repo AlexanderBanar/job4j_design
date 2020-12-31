@@ -9,11 +9,8 @@ public class SimpleArray<T> implements Iterable<T> {
     private int counter = 0;
 
     public void add(T model) {
-        for (int i = 0; i < data.length; i++) {
-            if (data[i] == null) {
-                data[i] = model;
-                counter++;
-            }
+        if (counter < 10) {
+            data[counter++] = model;
         }
     }
 
@@ -23,10 +20,10 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public void remove(int index) {
-        Objects.checkIndex(index, counter);
-        if (index == 9) {
-            data[9] = null;
-        } else {
+        if (Objects.checkIndex(index, counter) == index) {
+            data[index] = null;
+        }
+        if (index != counter - 1) {
             Object[] temp = data;
             System.arraycopy(data, index + 1, temp, index, counter - 1 - index);
             data = temp;
