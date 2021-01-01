@@ -9,7 +9,7 @@ public class SimpleArray<T> implements Iterable<T> {
     private int counter = 0;
 
     public void add(T model) {
-        if (counter < 10) {
+        if (counter < data.length) {
             data[counter++] = model;
         }
     }
