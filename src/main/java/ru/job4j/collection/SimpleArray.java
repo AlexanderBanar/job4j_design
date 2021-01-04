@@ -14,10 +14,14 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public void add(T model) {
         if (counter >= data.length) {
-            data = Arrays.copyOf(data, data.length * 2);
+            extend();
         }
         data[counter++] = model;
         modCount++;
+    }
+
+    private void extend() {
+        data = Arrays.copyOf(data, data.length * 2);
     }
 
     @Override
