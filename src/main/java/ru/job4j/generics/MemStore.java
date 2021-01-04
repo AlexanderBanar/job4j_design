@@ -5,7 +5,6 @@ import java.util.List;
 
 public final class MemStore<T extends Base> implements Store<T> {
     private final List<T> mem = new ArrayList<>();
-    private int index = 0;
 
     @Override
     public void add(T model) {
@@ -14,8 +13,8 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        T item = findById(id);
-        if (item != null) {
+        int index = indexOf(id);
+        if (index != -1) {
             mem.set(index, model);
             return true;
         }
@@ -24,8 +23,8 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean delete(String id) {
-        T item = findById(id);
-        if (item != null) {
+        int index = indexOf(id);
+        if (index != -1) {
             mem.remove(index);
             return true;
         }
@@ -34,14 +33,18 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public T findById(String id) {
-        T item = null;
+        int index = indexOf(id);
+        return (index != -1) ? mem.get(index) : null;
+    }
+
+    private int indexOf(String id) {
+        int rsl = -1;
         for (int i = 0; i < mem.size(); i++) {
-            item = mem.get(i);
-            if (item.getId().equals(id)) {
-                index = i;
+            if (mem.get(i).getId().equals(id)) {
+                rsl = i;
                 break;
             }
         }
-        return item;
+        return rsl;
     }
 }
