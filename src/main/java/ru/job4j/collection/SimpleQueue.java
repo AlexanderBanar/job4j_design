@@ -5,8 +5,14 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        T value = in.poll();
-        out.push(value);
+        T value;
+        while (in.getSize() > 1) {
+            out.push(in.pop());
+        }
+        value = in.pop();
+        while (out.getSize() > 0) {
+            in.push(out.pop());
+        }
         return value;
     }
 

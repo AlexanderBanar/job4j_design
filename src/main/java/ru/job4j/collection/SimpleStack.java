@@ -9,11 +9,6 @@ public class SimpleStack<T> {
         return linked.deleteLast();
     }
 
-    public T poll() {
-        size--;
-        return linked.deleteFirst();
-    }
-
     public void push(T value) {
         size++;
         linked.add(value);
