@@ -5,7 +5,7 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        T value = in.pop();
+        T value = in.poll();
         out.push(value);
         return value;
     }

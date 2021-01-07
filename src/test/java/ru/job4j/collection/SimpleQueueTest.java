@@ -50,4 +50,12 @@ public class SimpleQueueTest {
         assertThat(queue.poll(), is(2));
     }
 
+    @Test
+    public void whenPushPollThenPushPoll() {
+        SimpleStack<Integer> stack = new SimpleStack<>();
+        stack.push(1);
+        stack.push(2);
+        assertThat(stack.pop(), is(2));
+    }
+
 }
