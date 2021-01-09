@@ -20,6 +20,10 @@ public class SimpleArray<T> implements Iterable<T> {
         modCount++;
     }
 
+    public Object[] getData() {
+        return data;
+    }
+
     private void extend() {
         data = Arrays.copyOf(data, data.length * 2);
     }
