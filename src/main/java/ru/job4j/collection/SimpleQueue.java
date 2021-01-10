@@ -7,23 +7,19 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        if (in.getSize() == 0) {
+        if (in.getSize() == 0 && isEmpty()) {
             throw new NoSuchElementException();
         }
-        T value = null;
-        int reduced = in.getSize() - 1;
-        while (in.getSize() != reduced) {
-            if (in.getSize() > 1) {
+        if (isEmpty()) {
+            while (in.getSize() != 0) {
                 out.push(in.pop());
             }
-            if (in.getSize() == 1) {
-                value = in.pop();
-            }
-            if (out.getSize() > 0) {
-                in.push(out.pop());
-            }
         }
-        return value;
+        return out.pop();
+    }
+
+    private boolean isEmpty() {
+        return out.getSize() == 0;
     }
 
     public void push(T value) {
