@@ -23,8 +23,13 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(name, user.name) &&
-                Objects.equals(children, user.children) &&
-                Objects.equals(birthday, user.birthday);
+        return Objects.equals(name, user.name)
+                && Objects.equals(children, user.children)
+                && Objects.equals(birthday, user.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, children, birthday);
     }
 }
