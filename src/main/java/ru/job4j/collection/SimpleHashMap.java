@@ -44,13 +44,12 @@ public class SimpleHashMap<K, V> implements Iterable<Map.Entry<K, V>> {
         if (data[getIndex(key)] == null) {
             return false;
         }
+        if (!data[getIndex(key)].key.equals(key)) {
+            return false;
+        }
         data[getIndex(key)] = null;
         counter--;
         return true;
-    }
-
-    public Node[] getData() {
-        return data;
     }
 
     private static class Node<K, V> {
