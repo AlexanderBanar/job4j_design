@@ -59,6 +59,31 @@ public class Email {
             r--;
         }
         return initial;
+
+//        Map<String, User> map = new HashMap<>();
+//
+//        for (int i = 0; i < initial.size(); i++) {
+//            User user = initial.get(i);
+//            List<String> tempEmails = user.addresses;
+//
+//            for (int k = 0; k < tempEmails.size(); k++) {
+//                String n = tempEmails.get(k);
+//
+//                if (!map.containsKey(n)) {
+//                    map.put(n, user);
+//                } else {
+//                    user = map.get(n);
+//                    k = 0;
+//                    continue;
+//                }
+//
+//
+//
+//            }
+//
+//
+//        }
+
     }
 
     public static class User {
