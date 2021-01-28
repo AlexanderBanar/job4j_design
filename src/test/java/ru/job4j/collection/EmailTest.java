@@ -25,14 +25,14 @@ public class EmailTest {
         Email.User user1 = new Email.User("user1", new ArrayList<>(List.of("a", "b", "c")));
         Email.User user2 = new Email.User("user2", new ArrayList<>(List.of("d", "e")));
         Email.User user3 = new Email.User("user3", new ArrayList<>(List.of("c", "n")));
-        Email.User user4 = new Email.User("user1", new ArrayList<>(List.of("a", "b", "c", "n")));
+        Email.User user4 = new Email.User("user3", new ArrayList<>(List.of("a", "b", "c", "n")));
         List<Email.User> list = new ArrayList<>();
         list.add(user1);
         list.add(user2);
         list.add(user3);
         List<Email.User> listCompressed = new ArrayList<>();
-        listCompressed.add(user4);
         listCompressed.add(user2);
+        listCompressed.add(user4);
         List<Email.User> rsl = new Email().compress(list);
         assertThat(rsl, is(listCompressed));
     }
@@ -44,7 +44,8 @@ public class EmailTest {
         Email.User user3 = new Email.User("user3", new ArrayList<>(List.of("c")));
         Email.User user4 = new Email.User("user4", new ArrayList<>(List.of("k", "n", "e", "j", "e")));
         Email.User user5 = new Email.User("user5", new ArrayList<>(List.of("w", "o")));
-        Email.User user7 = new Email.User("user2", new ArrayList<>(List.of("d", "e", "j", "k", "n")));
+        Email.User user44 = new Email.User("user4", new ArrayList<>(List.of("d", "e", "j", "k", "n")));
+        Email.User user33 = new Email.User("user3", new ArrayList<>(List.of("a", "b", "c")));
         List<Email.User> list = new ArrayList<>();
         list.add(user1);
         list.add(user2);
@@ -52,10 +53,11 @@ public class EmailTest {
         list.add(user4);
         list.add(user5);
         List<Email.User> rsl = new Email().compress(list);
-        assertThat(rsl.contains(user1), is(true));
-        assertThat(rsl.contains(user7), is(true));
+        assertThat(rsl.contains(user1), is(false));
+        assertThat(rsl.contains(user44), is(true));
         assertThat(rsl.contains(user2), is(false));
         assertThat(rsl.contains(user5), is(true));
+        assertThat(rsl.contains(user33), is(true));
         assertThat(rsl.size(), is(3));
     }
 
@@ -65,7 +67,7 @@ public class EmailTest {
         Email.User user2 = new Email.User("user2", new ArrayList<>(List.of("b", "c")));
         Email.User user3 = new Email.User("user3", new ArrayList<>(List.of("c", "d")));
         Email.User user4 = new Email.User("user4", new ArrayList<>(List.of("d")));
-        Email.User user5 = new Email.User("user1", new ArrayList<>(List.of("a", "b", "c", "d")));
+        Email.User user5 = new Email.User("user4", new ArrayList<>(List.of("a", "b", "c", "d")));
         List<Email.User> list = new ArrayList<>();
         list.add(user1);
         list.add(user2);

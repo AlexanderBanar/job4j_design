@@ -4,49 +4,41 @@ import java.util.*;
 
 public class Email {
     public List<User> compress(List<User> initial) {
-        Map<String, Integer> map = new HashMap<>();
-        List<Integer> removals = new ArrayList<>();
-        boolean toMerge = false;
-        boolean reDo = false;
-        int index = 0;
+        Map<String, String> map = new HashMap<>();
+        Map<String, User> rsl = new HashMap<>();
         for (int i = 0; i < initial.size(); i++) {
-            List<String> tempEmails = initial.get(i).addresses;
-            for (int k = 0; k < tempEmails.size(); k++) {
-                String n = tempEmails.get(k);
-                if (!reDo) {
-                    if (map.containsKey(n)) {
-                        toMerge = true;
-                        index = map.get(n);
-                        k = 0;
-                        reDo = true;
-                        continue;
-                    } else {
-                        map.put(n, i);
-                    }
+            User user = initial.get(i);
+            Set<String> avoidDuplicatesMails = new HashSet<>(user.addresses);
+            List<String> mails = new ArrayList<>(avoidDuplicatesMails);
+            List<String> newMails = mails;
+
+            for (int k = 0; k < mails.size(); k++) {
+                String n = mails.get(k);
+
+                if (!map.containsKey(n)) {
+                    map.put(n, user.name);
                 } else {
-                    map.put(n, index);
+                    String usernameToDel = map.get(n);
+                    if (rsl.containsKey(usernameToDel)) {
+                        User toDel = rsl.get(usernameToDel);
+                        List<String> mailsToDel = toDel.addresses;
+                        for (String mail : mailsToDel) {
+                            map.put(mail, user.name);
+                            if (!mail.equals(n)) {
+                                newMails.add(mail);
+                            }
+                        }
+                    }
+                    rsl.remove(usernameToDel);
                 }
             }
-            reDo = false;
-            if (toMerge) {
-                User existing = initial.get(index);
-                Set<String> modifiedSet = new HashSet<>();
-                modifiedSet.addAll(existing.addresses);
-                modifiedSet.addAll(tempEmails);
-                List<String> modifiedList = new ArrayList<>(modifiedSet);
-                initial.set(index, new User(existing.name, modifiedList));
-                removals.add(i);
-                toMerge = false;
-            }
-        }
-        int r = 0;
-        for (Integer i : removals) {
-            initial.remove((r + i));
-            r--;
-        }
-        return initial;
-    }
 
+            Set<String> avoidDuplicatesMails2 = new HashSet<>(newMails);
+            newMails = new ArrayList<>(avoidDuplicatesMails2);
+            rsl.put(user.name, new User(user.name, newMails));
+        }
+        return new ArrayList<>(rsl.values());
+    }
 
     public static class User {
         String name;
