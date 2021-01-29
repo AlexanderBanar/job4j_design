@@ -8,13 +8,10 @@ public class Email {
         Map<String, User> rsl = new HashMap<>();
         for (int i = 0; i < initial.size(); i++) {
             User user = initial.get(i);
-            Set<String> avoidDuplicatesMails = new HashSet<>(user.addresses);
-            List<String> mails = new ArrayList<>(avoidDuplicatesMails);
+            List<String> mails = user.addresses;
             List<String> newMails = mails;
-
             for (int k = 0; k < mails.size(); k++) {
                 String n = mails.get(k);
-
                 if (!map.containsKey(n)) {
                     map.put(n, user.name);
                 } else {
@@ -32,9 +29,6 @@ public class Email {
                     rsl.remove(usernameToDel);
                 }
             }
-
-            Set<String> avoidDuplicatesMails2 = new HashSet<>(newMails);
-            newMails = new ArrayList<>(avoidDuplicatesMails2);
             rsl.put(user.name, new User(user.name, newMails));
         }
         return new ArrayList<>(rsl.values());
