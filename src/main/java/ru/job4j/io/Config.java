@@ -1,5 +1,7 @@
 package ru.job4j.io;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,18 +18,23 @@ public class Config {
     }
 
     public void load() {
-        String[] cleanedLines = toString().split(System.lineSeparator());
-        for (String line : cleanedLines) {
-            if (!line.startsWith("//") && line.contains("=")) {
-                String[] pair = line.trim().split("=");
-                values.put(pair[0], pair[1]);
+        String temp;
+        Reader inputString = new StringReader(toString());
+        try (BufferedReader in = new BufferedReader(inputString)) {
+            while ((temp = in.readLine()) != null) {
+                if (!temp.startsWith("#") && temp.contains("=")) {
+                    String[] pair = temp.trim().split("=");
+                    values.put(pair[0], pair[1]);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public String value(String key) {
         if (!values.containsKey(key)) {
-            throw new UnsupportedOperationException("Don't impl this method yet!");
+            throw new UnsupportedOperationException("The key is missing");
         }
         return values.get(key);
     }
