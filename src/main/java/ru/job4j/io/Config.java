@@ -1,7 +1,5 @@
 package ru.job4j.io;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +17,7 @@ public class Config {
 
     public void load() {
         String temp;
-        Reader inputString = new StringReader(toString());
-        try (BufferedReader in = new BufferedReader(inputString)) {
+        try (BufferedReader in = new BufferedReader(new FileReader(this.path))) {
             while ((temp = in.readLine()) != null) {
                 if (!temp.startsWith("#") && temp.contains("=")) {
                     String[] pair = temp.trim().split("=");
