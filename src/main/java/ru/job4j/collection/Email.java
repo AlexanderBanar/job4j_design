@@ -4,41 +4,36 @@ import java.util.*;
 
 public class Email {
     public List<User> compress(List<User> initial) {
-        Map<String, String> map = new HashMap<>();
-        Map<String, User> rsl = new HashMap<>();
-        for (int i = 0; i < initial.size(); i++) {
-            User user = initial.get(i);
-            List<String> mails = user.addresses;
-            List<String> newMails = mails;
-            for (int k = 0; k < mails.size(); k++) {
-                String n = mails.get(k);
-                if (!map.containsKey(n)) {
-                    map.put(n, user.name);
-                } else {
-                    String usernameToDel = map.get(n);
-                    if (rsl.containsKey(usernameToDel)) {
-                        User toDel = rsl.get(usernameToDel);
-                        List<String> mailsToDel = toDel.addresses;
-                        for (String mail : mailsToDel) {
-                            map.put(mail, user.name);
-                            if (!mail.equals(n)) {
-                                newMails.add(mail);
-                            }
-                        }
-                    }
-                    rsl.remove(usernameToDel);
+        Map<String, String> map = new HashMap<>(); // Map <Email, Username>
+        Map<String, User> rsl = new HashMap<>(); // Map <Username, User>
+        for (User current : initial) {
+            String username = null;
+            for (String email : current.addresses) {
+                if (map.containsKey(email)) {
+                    username = map.get(email);
+                    break;
                 }
             }
-            rsl.put(user.name, new User(user.name, newMails));
+            if (username == null) {
+                rsl.put(current.name, current);
+            } else {
+                Set<String> mergedEmails = rsl.get(username).addresses;
+                mergedEmails.addAll(current.addresses);
+                rsl.put(username, new User(username, mergedEmails));
+            }
+            username = (username == null) ? current.name : username;
+            for (String email : current.addresses) {
+                map.putIfAbsent(email, username);
+            }
         }
         return new ArrayList<>(rsl.values());
     }
 
     public static class User {
         String name;
-        List<String> addresses;
+        Set<String> addresses;
 
-        public User(String name, List<String> addresses) {
+        public User(String name, Set<String> addresses) {
             this.name = name;
             this.addresses = addresses;
         }
