@@ -1,26 +1,31 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Analize {
     public static void unavailable(String source, String target) {
         String line;
-        boolean started = false;
+        boolean isStarted = false;
         Pattern pattern = Pattern.compile("400|500");
-        StringBuilder outText = new StringBuilder();
+        List<String> outList = new ArrayList<>();
+        StringBuilder timePair = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new FileReader(source))) {
             while ((line = in.readLine()) != null) {
                 Matcher matcher = pattern.matcher(line);
-                if (matcher.find() && !started) {
-                    String[] temp = line.split(" ");
-                    outText.append(temp[1]).append(";");
-                    started = true;
-                } else if (!matcher.find() && started) {
-                    String[] temp = line.split(" ");
-                    outText.append(temp[1]).append(System.lineSeparator());
-                    started = false;
+                if (matcher.find() && !isStarted) {
+                    String[] splitLine = line.split(" ");
+                    timePair.append(splitLine[1]).append(";");
+                    isStarted = true;
+                } else if (!matcher.find() && isStarted) {
+                    String[] splitLine = line.split(" ");
+                    timePair.append(splitLine[1]);
+                    outList.add(timePair.toString());
+                    isStarted = false;
+                    timePair.delete(0, timePair.length());
                 }
             }
         } catch (Exception e) {
@@ -31,7 +36,10 @@ public class Analize {
                         new FileOutputStream(target)
                 )
         )) {
-            out.write(outText.toString());
+            for (String s : outList) {
+                out.write(s);
+                out.println();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
