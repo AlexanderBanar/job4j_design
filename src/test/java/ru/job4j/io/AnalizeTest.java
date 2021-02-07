@@ -114,7 +114,7 @@ public class AnalizeTest {
             e.printStackTrace();
         }
         StringJoiner expected = new StringJoiner(System.lineSeparator());
-        expected.add("21:20:00;21:21:00");
+        expected.add("21:20:00;21:22:00");
         expected.add("21:23:00;21:24:00");
         assertThat(rsl.toString(), is(expected.toString()));
     }
@@ -149,13 +149,7 @@ public class AnalizeTest {
             }
         }
         StringJoiner expected = new StringJoiner(System.lineSeparator());
-        expected.add("21:18:00;21:19:00");
+        expected.add("21:18:00;21:20:00");
         assertThat(rsl.toString(), is(expected.toString()));
-
-
-
-
     }
-
-
 }
