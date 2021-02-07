@@ -31,12 +31,16 @@ public class Analize {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Analize.writing(outList, target);
+    }
+
+    private static void writing(List<String> list, String target) {
         try (PrintWriter out = new PrintWriter(
                 new BufferedOutputStream(
                         new FileOutputStream(target)
                 )
         )) {
-            for (String s : outList) {
+            for (String s : list) {
                 out.write(s);
                 out.println();
             }
