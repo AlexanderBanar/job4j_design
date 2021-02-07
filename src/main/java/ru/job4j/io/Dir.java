@@ -8,6 +8,6 @@ public class Dir {
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
         }
-        System.out.println(String.format("name is %s, size : %s", file.getName(), file.getTotalSpace()));
+        System.out.println(String.format("name is %s, size : %s", file.getName(), file.length()));
     }
 }
