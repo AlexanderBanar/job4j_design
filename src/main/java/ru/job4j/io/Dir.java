@@ -8,6 +8,11 @@ public class Dir {
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
         }
-        System.out.println(String.format("name is %s, size : %s", file.getName(), file.length()));
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
+        for (File subfile : file.listFiles()) {
+            System.out.printf("name is %s, size : %s%n", subfile.getName(), subfile.length());
+        }
     }
 }
