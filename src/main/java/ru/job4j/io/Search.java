@@ -11,6 +11,9 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class Search {
     public static List<Path> search(Path root, String ext) throws IOException {
+        if (root.toString().length() == 0) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar search.jar ROOT_FOLDER.");
+        }
         SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().endsWith(ext));
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
