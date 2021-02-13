@@ -11,8 +11,11 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        if (args[0].length() == 0) {
-            throw new IllegalArgumentException("Root folder is null. Usage java -jar search.jar ROOT_FOLDER.");
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Arguments quantity is not two");
+        }
+        if (args[0].length() == 0 || args[1].length() == 0) {
+            throw new IllegalArgumentException("At least one argument is empty");
         }
         List<Path> list = search(Path.of(args[0]), "txt");
         list.forEach(System.out::println);
