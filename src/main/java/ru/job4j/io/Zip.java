@@ -4,26 +4,27 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
     public void packFiles(List<File> sources, File target) {
-        Set<File> uniquePaths = new HashSet<>(sources);
-        for (File file : uniquePaths) {
-            packSingleFile(file, target);
-        }
+
     }
 
-    public void packSingleFile(File source, File target) {
+    public void packSingleFile(File source, File target, String ext) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
+            List<Path> paths = Zip.searchFiles(source.toPath(), ext);
+            List<File> files = paths.stream()
+                    .map(Path::toFile)
+                    .collect(Collectors.toList());
+            for (File file : files) {
+                zip.putNextEntry(new ZipEntry(file.getPath()));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
+                    zip.write(out.readAllBytes());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,11 +45,8 @@ public class Zip {
         if (!argZip.valid()) {
             throw new IllegalArgumentException("At least one of 3 parameters is incorrect");
         }
-        List<Path> paths = Zip.searchFiles(Path.of(argZip.directory()), argZip.exclude());
-        List<File> files = paths.stream()
-                .map(Path::toFile)
-                .collect(Collectors.toList());
         Zip doer = new Zip();
-        doer.packFiles(files, Path.of(argZip.output()).toFile());
+        doer.packSingleFile(Path.of(argZip.directory()).toFile(), Path.of(argZip.output()).toFile(),
+                argZip.exclude());
     }
 }
