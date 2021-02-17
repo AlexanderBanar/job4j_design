@@ -27,12 +27,7 @@ public class ConsoleChat {
         chronicles.append(message);
         chronicles.append(System.lineSeparator());
         String reply = "";
-        List<String> replies = new ArrayList<>();
-        try (BufferedReader read = new BufferedReader(new FileReader(this.botAnswers))) {
-            read.lines().forEach(replies::add);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<String> replies = reading();
         boolean stopped = false;
         while (!message.equals(OUT)) {
             if (stopped) {
@@ -55,8 +50,22 @@ public class ConsoleChat {
                 }
             }
         }
+        writing(chronicles.toString());
+    }
+
+    private List<String> reading() {
+        List<String> replies = new ArrayList<>();
+        try (BufferedReader read = new BufferedReader(new FileReader(this.botAnswers))) {
+            read.lines().forEach(replies::add);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return replies;
+    }
+
+    private void writing(String chronicle) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(this.path))) {
-            out.write(chronicles.toString());
+            out.write(chronicle);
         } catch (Exception e) {
             e.printStackTrace();
         }
