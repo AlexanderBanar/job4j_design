@@ -17,7 +17,12 @@ public class EchoServer {
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
-                    String[] rawMessage = in.readLine().split("=");
+                    StringBuilder fullClientReply = new StringBuilder();
+                    String str;
+                    while (!(str = in.readLine()).isEmpty()) {
+                        fullClientReply.append(str);
+                    }
+                    String[] rawMessage = fullClientReply.toString().split("=", 2);
                     String clientRequest = rawMessage[1].replaceAll(" HTTP/1\\.1", "");
                     if (clientRequest.contains("Exit")) {
                         out.write(("HTTP/1.1 200 OK\r\nclosing the server...\r\n").getBytes());
