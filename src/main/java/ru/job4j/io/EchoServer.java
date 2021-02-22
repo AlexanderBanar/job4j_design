@@ -25,17 +25,17 @@ public class EchoServer {
                     }
                     String[] rawMessage = fullClientReply.toString().split("=", 2);
                     String clientRequest = rawMessage[1].replaceAll(" HTTP/1\\.1", "");
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    out.write("Hello, dear friend\r\n\r\n".getBytes());
                     if (clientRequest.contains("Exit")) {
-                        out.write(("HTTP/1.1 200 OK\r\nclosing the server...\r\n").getBytes());
-                        out.write("Server is closed\r\n".getBytes());
+                        out.write(("HTTP/1.1 200 OK\r\n\r\n").getBytes());
+                        out.write(("closing the server...\r\n\r\n").getBytes());
+                        out.write("Server is closed\r\n\r\n".getBytes());
                         server.close();
                         return;
-                    }
-                    if (clientRequest.contains("Hello")) {
-                        out.write("HTTP/1.1 200 OK\r\n".getBytes());
                     } else {
-                        out.write("HTTP/1.1 200 OK\r\n".getBytes());
-                        out.write((clientRequest + "\r\n").getBytes());
+                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                        out.write((clientRequest + "\r\n\r\n").getBytes());
                     }
                 } catch (Exception e) {
                     LOG.error("Exception in line A", e);
