@@ -18,9 +18,10 @@ public class EchoServer {
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     StringBuilder fullClientReply = new StringBuilder();
-                    String str;
-                    while (!(str = in.readLine()).isEmpty()) {
+                    String str = in.readLine();
+                    while (!str.isEmpty()) {
                         fullClientReply.append(str);
+                        str = in.readLine();
                     }
                     String[] rawMessage = fullClientReply.toString().split("=", 2);
                     String clientRequest = rawMessage[1].replaceAll(" HTTP/1\\.1", "");
