@@ -19,8 +19,8 @@ public class UsageLog4j {
 
 
  //       LOG.trace("trace message");
-        LOG.debug("User info name : {}, age : {}, grade : {}, activity : {}," +
-                " account : {}, completion : {}, height : {}, course : {}, days : {}",
+        LOG.debug("User info name : {}, age : {}, grade : {}, activity : {},"
+                + " account : {}, completion : {}, height : {}, course : {}, days : {}",
                 name, age, grade, activity, account, completion, height, course, days);
  //       LOG.info("info message");
  //       LOG.warn("warn message");
