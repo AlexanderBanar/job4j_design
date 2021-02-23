@@ -1,16 +1,35 @@
 package ru.job4j.serialization;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.Arrays;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.Unmarshaller;
+
+import java.io.StringWriter;
+import java.io.StringReader;
+
+import com.sun.xml.txw2.annotation.XmlElement;
+
+@XmlRootElement(name = "worker")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Worker {
-    private final boolean permission;
-    private final int experience;
-    private final String name;
-    private final Card card;
-    private final String[] data;
+    @XmlAttribute
+    private boolean permission;
+    @XmlAttribute
+    private int experience;
+    @XmlAttribute
+    private String name;
+    private Card card;
+    private String[] data;
+
+    public Worker() {}
 
     public Worker(boolean permission, int experience, String name, Card card, String[] data) {
         this.permission = permission;
@@ -31,9 +50,14 @@ public class Worker {
                 + '}';
     }
 
+    @XmlElement(value = "card")
     private static class Card {
+        @XmlAttribute
         String number;
+        @XmlAttribute
         int year;
+
+        public Card() {}
 
         public Card(String number, int year) {
             this.number = number;
@@ -49,14 +73,31 @@ public class Worker {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException, IOException {
         final Worker worker = new Worker(true, 15, "Ivan",
                 new Card("3466F-0025-L27", 2021),
                 new String[]{"some data1", "some data2"});
-        final Gson gson = new GsonBuilder().create();
-        String toJson = gson.toJson(worker);
-        System.out.println(toJson);
-        final Worker workerReborn = gson.fromJson(toJson, Worker.class);
-        System.out.println(workerReborn);
+        //final Gson gson = new GsonBuilder().create();
+        //String toJson = gson.toJson(worker);
+        //System.out.println(toJson);
+        //final Worker workerReborn = gson.fromJson(toJson, Worker.class);
+        //System.out.println(workerReborn);
+        JAXBContext context = JAXBContext.newInstance(Worker.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        String result = "";
+        try (StringWriter writer = new StringWriter()) {
+            //serializing
+            marshaller.marshal(worker, writer);
+            result = writer.getBuffer().toString();
+            System.out.println(result);
+        }
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader reader = new StringReader(result)) {
+            // deserializing
+            Worker workerDeSerialized = (Worker) unmarshaller.unmarshal(reader);
+            System.out.println();
+            System.out.println(workerDeSerialized);
+        }
     }
 }
