@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<worker permission="true" experience="15">
+    <name>Ivan</name>
+    <card number="3466F-0025-L227" year="2021"/>
+    <data>
+        <datum>some data1</datum>
+        <datum>some data2</datum>
+    </data>
+</worker>
