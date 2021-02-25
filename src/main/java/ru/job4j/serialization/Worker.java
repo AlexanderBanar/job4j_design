@@ -3,7 +3,7 @@ package ru.job4j.serialization;
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 import javax.xml.bind.JAXBContext;
@@ -11,9 +11,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.Unmarshaller;
-
-import java.io.StringWriter;
-import java.io.StringReader;
 
 import com.sun.xml.txw2.annotation.XmlElement;
 
@@ -91,9 +88,16 @@ public class Worker {
             marshaller.marshal(worker, writer);
             result = writer.getBuffer().toString();
             System.out.println(result);
+            try (PrintWriter out = new PrintWriter(
+                    new BufferedOutputStream(
+                            new FileOutputStream("worker.xml")
+                    )
+            )) {
+                out.write(result);
+            }
         }
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        try (StringReader reader = new StringReader(result)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("worker.xml"))) {
             // deserializing
             Worker workerDeSerialized = (Worker) unmarshaller.unmarshal(reader);
             System.out.println();
