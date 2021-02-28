@@ -26,7 +26,9 @@ public class Worker {
     private Card card;
     private String[] data;
 
-    public Worker() {}
+    public Worker() {
+
+    }
 
     public Worker(boolean permission, int experience, String name, Card card, String[] data) {
         this.permission = permission;
@@ -54,7 +56,9 @@ public class Worker {
         @XmlAttribute
         int year;
 
-        public Card() {}
+        public Card() {
+
+        }
 
         public Card(String number, int year) {
             this.number = number;
