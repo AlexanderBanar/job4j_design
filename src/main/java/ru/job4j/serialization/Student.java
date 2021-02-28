@@ -102,8 +102,8 @@ public class Student {
     }
 
     public static void main(String[] args) {
-        JSONObject jsonCard = new JSONObject("{\"number\":\"687467\", " +
-                "\"year\":\"2021\"}");
+        JSONObject jsonCard = new JSONObject("{\"number\":\"687467\", "
+                + "\"year\":\"2021\"}");
         List<String> data = new ArrayList<>();
         data.add("data1");
         data.add("data2");
