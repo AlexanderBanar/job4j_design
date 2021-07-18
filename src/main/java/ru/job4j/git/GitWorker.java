@@ -8,7 +8,7 @@ public class GitWorker {
         System.out.println("____");
     }
 
-    public static String getMessage() {
-        return "Void String";
+    public static int getOne() {
+        return 1;
     }
 }
