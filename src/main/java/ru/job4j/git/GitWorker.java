@@ -7,4 +7,8 @@ public class GitWorker {
         System.out.println("This is third commit in the commit chain");
         System.out.println("____");
     }
+
+    public static String getMessage() {
+        return "Void String";
+    }
 }
