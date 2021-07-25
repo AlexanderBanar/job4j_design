@@ -1,0 +1,3 @@
+Alex;33;junior developer;
+Tom;35;middle developer;
+Bob;37;senior developer;
